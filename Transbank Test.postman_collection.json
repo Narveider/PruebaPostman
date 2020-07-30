@@ -1,0 +1,277 @@
+{
+	"info": {
+		"_postman_id": "af474a5d-594a-4c6a-bef7-2a83f679c1fb",
+		"name": "Transbank Test Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST_USER",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "19c09e5e-d2bc-41de-8870-beef2da41de4",
+						"exec": [
+							"tests[\"Codigo de estado es 200\"] = responseCode.code === 200;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"username\": \"Diego\",\n        \"lastName\": \"Narváez\",\n        \"age\": 24\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/people/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"people",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET_USERS",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dab4b642-f14e-4a3a-a9dd-82946b3b6331",
+						"exec": [
+							"tests[\"Codigo de estado es 200\"] = responseCode.code === 200;\r",
+							"pm.environment.set(\"UUID\", pm.response.json()[0].id); \r",
+							"\r",
+							"//Le agrege las 2 maneras de trabajar los tests\r",
+							"pm.test(\"El Tiempo de respuesta es menor que 600ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(600);\r",
+							"});\r",
+							"\r",
+							"tests[\"Contiene el uuid\"] = responseBody.has(\"id\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/people/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"people",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET_USER",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "89fe04ab-a1d0-4704-86b3-a87e5c15a930",
+						"exec": [
+							"tests[\"Codigo de estado es 200\"] = responseCode.code === 200;\r",
+							"var data = JSON.parse(responseBody);\r",
+							"pm.environment.set(\"UUID\", pm.response.json()[0].id); \r",
+							"pm.environment.set(\"URLPATCH\", pm.response.json()[0].id);\r",
+							"\r",
+							"//Le agrege las 2 maneras de trabajar los tests\r",
+							"pm.test(\"El Tiempo de respuesta es menor que 600ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(600);\r",
+							"});\r",
+							"\r",
+							"tests[\"Contiene el uuid\"] = responseBody.has(\"id\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/people/{{UUID}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"people",
+						"{{UUID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH_USER",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e5def691-6f89-41a8-a716-f3cb380dd0d3",
+						"exec": [
+							"tests[\"Codigo de estado es 200\"] = responseCode.code === 200;\r",
+							"\r",
+							"//Le agrege las 2 maneras de trabajar los tests\r",
+							"pm.test(\"El Tiempo de respuesta es menor que 600ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(600);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"username\": \"DIEGO\",\r\n        \"lastName\": \"NARVAEZ\",\r\n        \"age\": 20\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/people/{{URLPATCH}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"people",
+						"{{URLPATCH}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET_USER_VALIDADOR",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4ba2c76d-34ac-4784-9a03-ee7af90983c8",
+						"exec": [
+							"tests[\"Codigo de estado es 200\"] = responseCode.code === 200;\r",
+							"var data = JSON.parse(responseBody);\r",
+							"pm.environment.set(\"DELETE\", pm.response.json()[0].id);\r",
+							"\r",
+							"//Le agrege las 2 maneras de trabajar los tests\r",
+							"pm.test(\"El Tiempo de respuesta es menor que 600ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(600);\r",
+							"});\r",
+							"\r",
+							"tests[\"Contiene el uuid\"] = responseBody.has(\"id\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/people/{{UUID}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"people",
+						"{{UUID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE_USER",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "edb89be9-30c0-44e6-8b00-403fead70fd9",
+						"exec": [
+							"tests[\"Codigo de estado es 200\"] = responseCode.code === 200;\r",
+							"\r",
+							"//Le agrege las 2 maneras de trabajar los tests\r",
+							"pm.test(\"El Tiempo de respuesta es menor que 600ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(600);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/people/b01b04c3-a616-4eb6-90bf-0f6df0a25b2d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"people",
+						"b01b04c3-a616-4eb6-90bf-0f6df0a25b2d"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
